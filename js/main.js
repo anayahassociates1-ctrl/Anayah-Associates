@@ -130,7 +130,7 @@
   });
 
   // Desktop smooth anchor clicks with offset
-  $$('.nav-link, .btn-hero-primary, .btn-hero-secondary, .btn-pill-nav, .f-col a[href^="#"], .about-actions a[href^="#"], .back-top').forEach(function (link) {
+  $$('.nav-link, .btn-hero-primary, .btn-hero-secondary, .btn-pill-nav, .f-col a[href^="#"], .about-actions a[href^="#"], .about-office-pill, .back-top').forEach(function (link) {
     link.addEventListener('click', function (e) {
       var targetId = link.getAttribute('href');
       if (targetId && targetId.startsWith('#') && targetId.length > 1) {
