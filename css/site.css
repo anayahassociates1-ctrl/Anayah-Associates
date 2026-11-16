@@ -336,6 +336,86 @@ section, header, footer {
   transform-origin: left;
 }
 
+/* Nav Dropdown for Services */
+.nav-dropdown {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav-dropdown-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+.nav-dropdown-toggle .nav-arrow {
+  display: inline-block;
+  transition: transform 0.25s var(--ease);
+}
+
+.nav-dropdown:hover .nav-dropdown-toggle .nav-arrow,
+.nav-dropdown.is-open .nav-dropdown-toggle .nav-arrow {
+  transform: rotate(180deg);
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  min-width: 250px;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 12px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16), 0 4px 12px rgba(0, 0, 0, 0.06);
+  padding: 8px 6px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 1050;
+}
+
+.nav-dropdown:hover .nav-dropdown-menu,
+.nav-dropdown.is-open .nav-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+.nav-dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  border-radius: 7px;
+  text-decoration: none;
+  transition: background 0.15s, color 0.15s, transform 0.15s;
+  white-space: nowrap;
+}
+
+.nav-dropdown-item:hover {
+  background: #f4f4f5;
+  color: #09090b;
+  transform: translateX(3px);
+}
+
+.nav-dropdown-item .item-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
 .nav-right {
   display: flex;
   align-items: center;
@@ -534,6 +614,70 @@ section, header, footer {
 .m-link:hover {
   color: var(--accent-light);
   transform: translateX(4px);
+}
+
+.m-services-accordion {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 8px 0;
+}
+
+.m-services-btn {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  font-family: var(--display);
+  font-size: 19px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.88);
+  cursor: pointer;
+  padding: 6px 0;
+}
+
+.m-services-btn .m-arr {
+  font-size: 14px;
+  transition: transform 0.25s var(--ease);
+}
+
+.m-services-accordion.is-open .m-services-btn .m-arr {
+  transform: rotate(180deg);
+}
+
+.m-services-list {
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px 0 6px 14px;
+}
+
+.m-services-accordion.is-open .m-services-list {
+  display: flex;
+}
+
+.m-sub-link {
+  font-size: 14.5px;
+  color: rgba(255, 255, 255, 0.72);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.15s, transform 0.15s;
+}
+
+.m-sub-link:hover {
+  color: var(--accent);
+  transform: translateX(3px);
+}
+
+.m-sub-link::before {
+  content: "";
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
 }
 
 .mobile-drawer-footer {
@@ -1436,14 +1580,16 @@ section, header, footer {
   font-size: 17.5px;
   font-weight: 600;
   color: var(--ink);
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   line-height: 1.35;
 }
 
-.g-desc {
-  font-size: 13px;
-  color: var(--ink-muted);
-  line-height: 1.6;
+.g-loc {
+  font-size: 13.5px;
+  color: var(--accent);
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.4;
 }
 
 /* ==========================================================================
@@ -2680,3 +2826,228 @@ section, header, footer {
   transform: translateX(-50%) translateY(0);
   opacity: 1;
 }
+
+/* ==========================================================================
+   DIRECTOR PORTAL & CATEGORY FOLDERS STYLES
+   ========================================================================== */
+
+/* Navbar Director Access Button */
+.btn-director-nav {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 14px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: rgba(212, 175, 55, 0.12);
+  border: 1px solid rgba(212, 175, 55, 0.4);
+  color: var(--accent);
+  cursor: pointer;
+  transition: all 0.25s var(--ease);
+}
+
+.btn-director-nav:hover {
+  background: var(--accent);
+  color: #111827;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+}
+
+/* Gallery Folder Tabs */
+.gallery-folders {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 14px;
+  margin-bottom: 20px;
+}
+
+.folder-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  background: #ffffff;
+  border: 1px solid var(--border);
+  border-radius: 9999px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-light);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+}
+
+.folder-tab:hover {
+  color: var(--ink);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.folder-tab.is-active {
+  background: var(--ink);
+  color: #ffffff;
+  border-color: var(--ink);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+}
+
+.folder-tab .folder-badge {
+  font-size: 11px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(0,0,0,0.06);
+  color: inherit;
+  font-weight: 700;
+}
+
+.folder-tab.is-active .folder-badge {
+  background: var(--accent);
+  color: #111827;
+}
+
+/* Director Toolbar */
+.director-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, #1e293b, #0f172a);
+  color: #ffffff;
+  padding: 12px 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.director-status {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.director-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: #10b981;
+  box-shadow: 0 0 10px #10b981;
+}
+
+.director-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-director-add {
+  background: var(--accent) !important;
+  color: #111827 !important;
+  font-weight: 600 !important;
+  border: none !important;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.btn-director-add:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.btn-director-logout {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #e2e8f0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  cursor: pointer;
+}
+
+.btn-director-logout:hover {
+  background: rgba(239, 68, 68, 0.2) !important;
+  border-color: rgba(239, 68, 68, 0.4) !important;
+  color: #fca5a5 !important;
+}
+
+/* Card Director Action Buttons */
+.card-director-actions {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: flex;
+  gap: 6px;
+  z-index: 10;
+  opacity: 0.95;
+}
+
+.card-director-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  backdrop-filter: blur(8px);
+}
+
+.btn-card-edit {
+  background: rgba(17, 24, 39, 0.85);
+  color: #f1f5f9;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+}
+
+.btn-card-edit:hover {
+  background: var(--accent);
+  color: #111827;
+}
+
+.btn-card-delete {
+  background: rgba(185, 28, 28, 0.85);
+  color: #ffffff;
+  border: 1px solid rgba(239, 68, 68, 0.3) !important;
+}
+
+.btn-card-delete:hover {
+  background: #dc2626;
+  transform: scale(1.05);
+}
+
+/* Director Form Styling inside dialog */
+.director-modal {
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+  background: #ffffff;
+  color: var(--ink);
+}
+
+.director-modal::backdrop {
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(4px);
+}
+
+.director-form input,
+.director-form select,
+.director-form textarea {
+  outline: none;
+  font-family: inherit;
+  transition: border-color 0.2s ease;
+}
+
+.director-form input:focus,
+.director-form select:focus,
+.director-form textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.15);
+}
+

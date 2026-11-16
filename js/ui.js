@@ -349,7 +349,7 @@ export class UIController {
         location: 'Deolali Pravara, Tal-Rahuri, Dist-Ahilyanagar',
         client: 'Mr. Bashir Pathan',
         scope: 'BPMS Tracing, 3D Elevation, RC Structural Design & Complete Execution',
-        description: 'Multi-storey commercial business hub engineered for modern retail frontages and flexible corporate office modules. Incorporates wide-span RCC framing, energy-efficient glazing envelope, and automated municipal approval sanction under MahaBPMS.',
+        description: 'Multi-storey commercial business hub engineered for modern retail frontages and flexible corporate office modules. Incorporates wide-span RCC framing, energy-efficient glazing envelope, and automated municipal approval sanction under MahaVastu.',
         img: 'assets/img/projects/pathan-complex.webp'
       },
       'mangalmurti-residency': {
@@ -448,7 +448,7 @@ export class UIController {
         location: 'Shrirampur, Ahilyanagar',
         client: 'Sonawane Developers',
         scope: 'Master Layout Plan, Row House Elevation, RC Structural Design',
-        description: 'A high-efficiency row housing scheme maximizing natural sunlight and cross-ventilation across individual modular plots, certified with MahaBPMS layout sanctioning.',
+        description: 'A high-efficiency row housing scheme maximizing natural sunlight and cross-ventilation across individual modular plots, certified with MahaVastu layout sanctioning.',
         img: 'assets/img/projects/row-house-scheme.webp'
       },
       'pilghar-villa': {

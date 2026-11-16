@@ -22,7 +22,7 @@ export const CHAPTERS = [
     title: '02 / BPMS SANCTION',
     h1Line1: 'MUNICIPAL CLEARANCE &',
     h1Line2: 'BPMS COMPLIANCE',
-    p: 'Complete Building Plan Management System (MahaBPMS / AutoDCR) scrutiny, town planning clearances, FSI optimization, setback audits, and statutory municipal sanctions across Maharashtra.'
+    p: 'Complete Building Plan Management System (MahaVastu / AutoCAD) scrutiny, town planning clearances, FSI optimization, setback audits, and statutory municipal sanctions across Maharashtra.'
   },
   {
     id: 'elevations',

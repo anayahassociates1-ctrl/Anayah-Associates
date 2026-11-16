@@ -111,6 +111,21 @@
     drawerClose.addEventListener('click', closeDrawer);
   }
 
+  // Mobile Drawer Services Accordion
+  var mServicesBtn = $('#m-services-btn');
+  var mServicesAccordion = $('#m-services-accordion');
+  if (mServicesBtn && mServicesAccordion) {
+    mServicesBtn.addEventListener('click', function () {
+      mServicesAccordion.classList.toggle('is-open');
+    });
+  }
+
+  $$('.m-sub-link').forEach(function (link) {
+    link.addEventListener('click', function () {
+      closeDrawer();
+    });
+  });
+
   $$('.m-link').forEach(function (link) {
     link.addEventListener('click', function (e) {
       closeDrawer();
@@ -130,7 +145,7 @@
   });
 
   // Desktop smooth anchor clicks with offset
-  $$('.nav-link, .btn-hero-primary, .btn-hero-secondary, .btn-pill-nav, .f-col a[href^="#"], .about-actions a[href^="#"], .about-office-pill, .back-top').forEach(function (link) {
+  $$('.nav-link[href^="#"], .btn-hero-primary, .btn-hero-secondary, .btn-pill-nav, .f-col a[href^="#"], .about-actions a[href^="#"], .about-office-pill, .back-top').forEach(function (link) {
     link.addEventListener('click', function (e) {
       var targetId = link.getAttribute('href');
       if (targetId && targetId.startsWith('#') && targetId.length > 1) {
@@ -290,96 +305,249 @@
     });
   });
 
-  /* ---------- 8. PROJECTS MODAL DATA & DIALOG ---------- */
-  var projectData = {
+  /* ---------- 8. PROJECTS DATA, 3 CATEGORY FOLDERS & DIRECTOR MANAGEMENT ---------- */
+  var defaultProjects = {
     'aasif': {
-      title: 'Aasif Bhai Luxury Residence',
-      sector: 'RESIDENTIAL VILLA · G+2',
-      location: 'Islampura, Shrirampur, Dist-Ahilyanagar',
+      id: 'aasif',
+      folder: 'residential',
       client: 'Mr. Aasif Bhai Shaikh',
-      scope: '3D Front View, RC Concrete Design & Turnkey Execution',
-      desc: 'A bespoke two-storey luxury home with cantilevered floating balconies, vertical warm-wood architectural louvers, soft ambient exterior lighting, and lush garden terraces.',
+      location: 'Islampura, Deolali Pravara',
       img: 'assets/img/projects/aasif-bhai-bungalow.webp'
     },
     'modern-elevation': {
-      title: 'Modern Architectural Elevation',
-      sector: '3D FRONT ELEVATION · AHILYANAGAR',
-      location: 'Ahilyanagar District, Maharashtra',
-      client: 'Private Residence',
-      scope: 'Photorealistic 3D Concept, Day & Evening Lighting Studies',
-      desc: 'High-contrast modern facade featuring textured stone tile accents, cantilevered parapet fins, warm ambient terrace illumination, and energy-conscious cross-ventilation planning.',
+      id: 'modern-elevation',
+      folder: 'residential',
+      client: 'Mazhar Bhai Pathan',
+      location: 'Rahuri, Ahilyanagar',
       img: 'assets/img/projects/architectural-elevation-modern.webp'
     },
     'commercial': {
-      title: 'Pathan Commercial Complex',
-      sector: 'COMMERCIAL COMPLEX · MULTI-STOREY',
-      location: 'Main Road, Shrirampur, Maharashtra',
+      id: 'commercial',
+      folder: 'commercial',
       client: 'Mr. Bashir Pathan',
-      scope: 'MahaBPMS Sanction, High-Load Concrete Framing, Full Contracting',
-      desc: 'Multi-storey commercial business center featuring ground floor retail shopping showrooms, flexible upper-level office units, basement parking, and heavy-duty IS-1893 seismic columns.',
+      location: 'Shivaji Chowk, Deolali Pravara',
       img: 'assets/img/projects/pathan-complex.webp'
     },
     'executive': {
-      title: 'Executive Modern Residence',
-      sector: 'LUXURY RESIDENTIAL VILLA',
-      location: 'Rahuri, Dist-Ahilyanagar',
-      client: 'Private Executive Family',
-      scope: 'Vastu Floor Layout, 3D Elevation, Structural Detailing',
-      desc: 'Spacious 4BHK architectural design featuring double-height ceiling living areas, bespoke open-plan Italian kitchen, private landscaped terrace, and complete IS-456 reinforcement detailing.',
+      id: 'executive',
+      folder: 'residential',
+      client: 'Shete Family',
+      location: 'Rahuri, Ahilyanagar',
       img: 'assets/img/projects/anayah-executive-residence.webp'
     },
-    'seed-oil': {
-      title: 'Shri Ganesh Seed Oil Plant',
-      sector: 'INDUSTRIAL HEAVY PEB & RC',
-      location: 'Industrial Corridor, Shrirampur',
-      client: 'Farmer Producer Co. / Agri-Industries',
-      scope: 'Factory PEB Steel Truss Design, Machinery Foundation, Town Planning',
-      desc: 'Heavy-duty industrial manufacturing plant with precision reinforced vibrating machinery foundations, high-clearance steel PEB framing, and specialized fire-safety circulation.',
-      img: 'assets/img/projects/industrial-jatap.webp'
-    },
     'contemporary': {
-      title: 'Contemporary Private Villa',
-      sector: 'MINIMALIST RESIDENTIAL HOME',
-      location: 'Deolali Pravara, Tal-Rahuri',
-      client: 'Private Commission',
-      scope: 'Bespoke Architecture, Structural Engineering, On-Site Audit',
-      desc: 'A modern white and charcoal minimalist villa with seamless indoor-outdoor courtyards, large solar-reflective glass fenestrations, and private terrace gardens.',
+      id: 'contemporary',
+      folder: 'residential',
+      client: 'Sagar Warghude',
+      location: 'Kangar, Tal-Rahuri',
       img: 'assets/img/projects/anayah-contemporary-villa.webp'
     },
     'mangal': {
-      title: 'Mangal Karyalay & Community Hall',
-      sector: 'PUBLIC COMMUNITY VENUE',
-      location: 'Ahilyanagar District, Maharashtra',
-      client: 'Community Trust',
-      scope: 'Wide-Span Steel Roof, Acoustical Layout, Town Planning Approval',
-      desc: 'A 1,200-capacity column-free banquet venue featuring long-span steel roof trusses, high-volume natural cross-ventilation, stage acoustics, and wide fire-exit clearances.',
+      id: 'mangal',
+      folder: 'commercial',
+      client: 'Sai Shaneshwar Farmer Producer Company Ltd',
+      location: 'Jatap',
       img: 'assets/img/projects/sai-shaneshwar-karyalay.webp'
     },
     'concept': {
-      title: 'Prestige Luxury Architectural Concept',
-      sector: 'SIGNATURE ARCHITECTURAL STUDY',
-      location: 'Shrirampur / Ahilyanagar',
-      client: 'Anayah Associates Signature Commission',
-      scope: 'Architectural Blueprint, 3D Walkthrough, Structural Model',
-      desc: 'A flagship design showcasing Anayah Associates signature design principles: effortless functionality, enduring structural durability, and refined architectural aesthetics.',
+      id: 'concept',
+      folder: 'residential',
+      client: 'Asim Inamdar',
+      location: 'Deolali Pravara',
       img: 'assets/img/projects/anayah-3d-concept.webp'
+    },
+    'sujit-londhe': {
+      id: 'sujit-londhe',
+      folder: 'residential',
+      client: 'Mr. Sujit Londhe',
+      location: 'Rahuri Factory',
+      img: 'assets/img/projects/mangalmurti-londhe.jpg'
+    },
+    'sunil-kalhapure': {
+      id: 'sunil-kalhapure',
+      folder: 'residential',
+      client: 'Shri. Sunil Kalhapure',
+      location: 'Vambori',
+      img: 'assets/img/projects/kalhapure-sunil.jpg'
+    },
+    'noman-qureshi': {
+      id: 'noman-qureshi',
+      folder: 'residential',
+      client: 'Noman Qureshi',
+      location: 'Rahata',
+      img: 'assets/img/projects/noman-qureshi.jpg'
+    },
+    'kalim-khan': {
+      id: 'kalim-khan',
+      folder: 'residential',
+      client: 'Kalim Khan',
+      location: 'Daulatpur (Uttar Pradesh)',
+      img: 'assets/img/projects/kalim-khan.jpg'
+    },
+    'twin-villa': {
+      id: 'twin-villa',
+      folder: 'residential',
+      client: 'Twin Villa Estate',
+      location: 'Rahuri, Ahilyanagar',
+      img: 'assets/img/projects/twin-villa-estate.jpg'
+    },
+    'hotel-ganraj': {
+      id: 'hotel-ganraj',
+      folder: 'commercial',
+      client: 'Hotel Ganraj',
+      location: 'State Highway Corridor, Maharashtra',
+      img: 'assets/img/projects/hotel-ganraj-aerial.jpg'
+    },
+    'masjid-elevation-1': {
+      id: 'masjid-elevation-1',
+      folder: 'religious',
+      client: 'Masjid',
+      location: '',
+      img: 'assets/img/projects/masjid-elevation-1.jpg'
+    },
+    'masjid-elevation-2': {
+      id: 'masjid-elevation-2',
+      folder: 'religious',
+      client: 'Masjid',
+      location: '',
+      img: 'assets/img/projects/masjid-elevation-2.jpg'
+    },
+    'masjid-interior-mihrab': {
+      id: 'masjid-interior-mihrab',
+      folder: 'religious',
+      client: 'Masjid',
+      location: '',
+      img: 'assets/img/projects/masjid-interior-mihrab.jpg'
+    },
+    'altaf-shaikh': {
+      id: 'altaf-shaikh',
+      folder: 'residential',
+      client: 'Altaf Shaikh',
+      location: 'Kolhar',
+      img: 'assets/img/projects/altaf-shaikh.jpg'
+    },
+    'fajal-bhai-jivani': {
+      id: 'fajal-bhai-jivani',
+      folder: 'residential',
+      client: 'Fajal Bhai Jivani',
+      location: 'Shrirampur',
+      img: 'assets/img/projects/fajal-bhai-jivani.jpg'
     }
   };
 
+  // Load clean project database (Owner Name & Location of Site ONLY)
+  var projectData = {};
+  var STORAGE_KEY = 'anayah_projects_clean_v7';
+  try {
+    var stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      projectData = JSON.parse(stored);
+    } else {
+      projectData = JSON.parse(JSON.stringify(defaultProjects));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(projectData));
+    }
+  } catch (e) {
+    projectData = JSON.parse(JSON.stringify(defaultProjects));
+  }
+
+  // Ensure default items and new designs are always synchronized
+  Object.keys(defaultProjects).forEach(function (k) {
+    if (!projectData[k]) {
+      projectData[k] = defaultProjects[k];
+    }
+  });
+
+  if (projectData['aasif']) {
+    projectData['aasif'].location = 'Islampura, Deolali Pravara';
+  }
+  if (projectData['modern-elevation']) {
+    projectData['modern-elevation'].client = 'Mazhar Bhai Pathan';
+    projectData['modern-elevation'].location = 'Rahuri, Ahilyanagar';
+  }
+  if (projectData['executive']) {
+    projectData['executive'].client = 'Shete Family';
+    projectData['executive'].location = 'Rahuri, Ahilyanagar';
+  }
+  if (projectData['contemporary']) {
+    projectData['contemporary'].client = 'Sagar Warghude';
+    projectData['contemporary'].location = 'Kangar, Tal-Rahuri';
+  }
+  if (projectData['commercial']) {
+    projectData['commercial'].location = 'Shivaji Chowk, Deolali Pravara';
+  }
+  if (projectData['mangal']) {
+    projectData['mangal'].client = 'Sai Shaneshwar Farmer Producer Company Ltd';
+    projectData['mangal'].location = 'Jatap';
+  }
+  if (!projectData['hotel-ganraj']) {
+    projectData['hotel-ganraj'] = defaultProjects['hotel-ganraj'];
+  }
+  if (projectData['masjid-elevation-1']) {
+    projectData['masjid-elevation-1'].client = 'Masjid';
+    projectData['masjid-elevation-1'].location = '';
+  }
+  if (projectData['masjid-elevation-2']) {
+    projectData['masjid-elevation-2'].client = 'Masjid';
+    projectData['masjid-elevation-2'].location = '';
+  }
+  if (projectData['masjid-interior-mihrab']) {
+    projectData['masjid-interior-mihrab'].client = 'Masjid';
+    projectData['masjid-interior-mihrab'].location = '';
+  }
+  if (!projectData['altaf-shaikh']) {
+    projectData['altaf-shaikh'] = defaultProjects['altaf-shaikh'];
+  }
+  if (!projectData['fajal-bhai-jivani']) {
+    projectData['fajal-bhai-jivani'] = defaultProjects['fajal-bhai-jivani'];
+  }
+  if (projectData['industrial-peb']) delete projectData['industrial-peb'];
+  if (projectData['seed-oil']) delete projectData['seed-oil'];
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(projectData));
+  } catch (e) {}
+
+  function saveProjectsToStorage() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(projectData));
+    } catch (e) {
+      console.warn('Storage save error', e);
+    }
+  }
+
+  var currentFolder = 'residential';
+  var isDirectorAuth = sessionStorage.getItem('anayah_director_auth') === 'true';
+
+  // Modal references
   var modal = $('#project-modal');
   var modalCloseBtn = $('#modal-close-btn');
+  var loginModal = $('#director-login-modal');
+  var loginModalClose = $('#login-modal-close');
+  var btnCancelLogin = $('#btn-cancel-login');
+  var directorLoginForm = $('#director-login-form');
+  var directorPasscodeInput = $('#director-passcode');
+  var loginError = $('#login-error');
+  var btnDirectorAccess = $('#btn-director-access');
+  var mDirectorAccess = $('#m-director-access');
+  var directorToolbar = $('#director-toolbar');
+  var btnDirectorLogout = $('#btn-director-logout');
+  var btnAddProject = $('#btn-add-project');
+  var editModal = $('#director-project-modal');
+  var editModalClose = $('#project-edit-modal-close');
+  var btnCancelEdit = $('#btn-cancel-edit');
+  var editProjectForm = $('#director-project-form');
+  var navDirectorText = $('#nav-director-text');
 
   function openProjectModal(key) {
     var data = projectData[key];
     if (!data || !modal) return;
 
-    $('#modal-title').textContent = data.title;
-    $('#modal-sector').textContent = data.sector;
-    $('#modal-location').textContent = data.location;
-    $('#modal-client').textContent = data.client;
-    $('#modal-scope').textContent = data.scope;
-    $('#modal-description').textContent = data.desc;
-    $('#modal-img').src = data.img;
+    var clientEl = $('#modal-client');
+    var locEl = $('#modal-location');
+    var imgEl = $('#modal-img');
+
+    if (clientEl) clientEl.textContent = data.client || data.title || '';
+    if (locEl) locEl.textContent = data.location || '';
+    if (imgEl) imgEl.src = data.img || '';
 
     if (modal.showModal) {
       modal.showModal();
@@ -401,21 +569,397 @@
     if (lenis) lenis.start();
   }
 
-  if (modalCloseBtn) {
-    modalCloseBtn.addEventListener('click', closeProjectModal);
-  }
+  if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeProjectModal);
   if (modal) {
     modal.addEventListener('click', function (e) {
       if (e.target === modal) closeProjectModal();
     });
   }
 
-  $$('.gallery-card').forEach(function (card) {
-    card.addEventListener('click', function () {
-      var key = card.dataset.project;
-      openProjectModal(key);
+  // Update folder badges and render cards
+  function updateFolderBadges() {
+    var counts = { residential: 0, commercial: 0, religious: 0, industrial: 0 };
+    Object.keys(projectData).forEach(function (k) {
+      var item = projectData[k];
+      var f = item.folder || 'residential';
+      if (counts[f] !== undefined) counts[f]++;
+    });
+    var bRes = $('#badge-residential');
+    var bCom = $('#badge-commercial');
+    var bRel = $('#badge-religious');
+    var bInd = $('#badge-industrial');
+    if (bRes) bRes.textContent = counts.residential;
+    if (bCom) bCom.textContent = counts.commercial;
+    if (bRel) bRel.textContent = counts.religious;
+    if (bInd) bInd.textContent = counts.industrial;
+  }
+
+  function renderGallery(folder) {
+    currentFolder = folder;
+    var track = $('#gallery-track');
+    if (!track) return;
+
+    // Update active tab buttons
+    $$('.folder-tab').forEach(function (tab) {
+      if (tab.dataset.folder === folder) {
+        tab.classList.add('is-active');
+      } else {
+        tab.classList.remove('is-active');
+      }
+    });
+
+    // Update navbar active states
+    $$('.js-folder-nav').forEach(function (link) {
+      if (link.dataset.folder === folder) {
+        link.classList.add('is-active');
+      } else {
+        link.classList.remove('is-active');
+      }
+    });
+
+    updateFolderBadges();
+
+    // Filter projects
+    var keys = Object.keys(projectData).filter(function (k) {
+      return (projectData[k].folder || 'residential') === folder;
+    });
+
+    track.innerHTML = '';
+
+    if (keys.length === 0) {
+      var emptyEl = document.createElement('div');
+      emptyEl.className = 'gallery-empty';
+      emptyEl.style.cssText = 'padding: 50px 20px; text-align: center; color: var(--ink-light); width: 100%; font-size: 14px;';
+      emptyEl.innerHTML = '<p>No projects in this folder yet.</p>' +
+        (isDirectorAuth ? '<button type="button" class="btn btn-sm btn-director-add" style="margin-top:10px;" onclick="document.getElementById(\'btn-add-project\').click()">+ Add First Project Photo</button>' : '');
+      track.appendChild(emptyEl);
+    } else {
+      keys.forEach(function (key) {
+        var item = projectData[key];
+        var card = document.createElement('article');
+        card.className = 'gallery-card';
+        card.dataset.project = key;
+
+        var imgWrap = document.createElement('div');
+        imgWrap.className = 'g-img-wrap';
+        var img = document.createElement('img');
+        img.src = item.img || 'assets/img/projects/anayah-3d-concept.webp';
+        img.alt = item.client || item.title || 'Project Photo';
+        img.loading = 'lazy';
+        imgWrap.appendChild(img);
+
+        var info = document.createElement('div');
+        info.className = 'g-info';
+
+        var name = document.createElement('h3');
+        name.className = 'g-name';
+        name.textContent = item.client || item.title || 'Project';
+
+        var loc = document.createElement('p');
+        loc.className = 'g-loc';
+        loc.textContent = item.location || '';
+
+        info.appendChild(name);
+        info.appendChild(loc);
+
+        card.appendChild(imgWrap);
+        card.appendChild(info);
+
+        // If Director mode is authenticated, show Edit & Delete buttons
+        if (isDirectorAuth) {
+          var actionBox = document.createElement('div');
+          actionBox.className = 'card-director-actions';
+
+          var editBtn = document.createElement('button');
+          editBtn.type = 'button';
+          editBtn.className = 'btn-card-edit';
+          editBtn.innerHTML = '✏️ Edit';
+          editBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            openEditProjectModal(key);
+          });
+
+          var delBtn = document.createElement('button');
+          delBtn.type = 'button';
+          delBtn.className = 'btn-card-delete';
+          delBtn.innerHTML = '🗑️ Delete';
+          delBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var owner = item.client || item.title || 'this project';
+            if (confirm('Delete project photo for "' + owner + '"?')) {
+              delete projectData[key];
+              saveProjectsToStorage();
+              renderGallery(currentFolder);
+              showToast('Project photo deleted.');
+            }
+          });
+
+          actionBox.appendChild(editBtn);
+          actionBox.appendChild(delBtn);
+          card.appendChild(actionBox);
+        }
+
+        card.addEventListener('click', function () {
+          openProjectModal(key);
+        });
+
+        track.appendChild(card);
+      });
+    }
+
+    currentTranslate = 0;
+    targetTranslate = 0;
+    if (track) track.style.transform = 'none';
+    if (typeof updateGalleryTarget === 'function') updateGalleryTarget();
+  }
+
+  // Folder tab click event
+  $$('.folder-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var f = tab.dataset.folder;
+      renderGallery(f);
     });
   });
+
+  // Folder nav links click (smooth scroll + activate folder)
+  $$('.js-folder-nav').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var f = link.dataset.folder;
+      if (f) renderGallery(f);
+      var drawer = $('#mobile-drawer');
+      if (drawer && drawer.classList.contains('is-open')) {
+        drawer.classList.remove('is-open');
+        document.body.style.overflow = '';
+      }
+    });
+  });
+
+  // Director Auth UI Updates
+  function updateDirectorUI() {
+    if (isDirectorAuth) {
+      if (directorToolbar) directorToolbar.style.display = 'flex';
+      if (navDirectorText) navDirectorText.textContent = '👑 Director Mode';
+    } else {
+      if (directorToolbar) directorToolbar.style.display = 'none';
+      if (navDirectorText) navDirectorText.textContent = 'Director Access';
+    }
+  }
+
+  function openLoginModal() {
+    if (loginError) loginError.style.display = 'none';
+    if (directorPasscodeInput) directorPasscodeInput.value = '';
+    if (loginModal) {
+      if (loginModal.showModal) loginModal.showModal();
+      else loginModal.setAttribute('open', '');
+      document.body.style.overflow = 'hidden';
+      if (lenis) lenis.stop();
+      setTimeout(function () {
+        if (directorPasscodeInput) directorPasscodeInput.focus();
+      }, 100);
+    }
+  }
+
+  function closeLoginModal() {
+    if (loginModal) {
+      if (loginModal.close) loginModal.close();
+      else loginModal.removeAttribute('open');
+      document.body.style.overflow = '';
+      if (lenis) lenis.start();
+    }
+  }
+
+  if (loginModalClose) loginModalClose.addEventListener('click', closeLoginModal);
+  if (btnCancelLogin) btnCancelLogin.addEventListener('click', closeLoginModal);
+
+  if (btnDirectorAccess) {
+    btnDirectorAccess.addEventListener('click', function () {
+      if (isDirectorAuth) {
+        showToast('Director mode is already active.');
+        var gal = $('#gallery');
+        if (gal) gal.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        openLoginModal();
+      }
+    });
+  }
+
+  if (mDirectorAccess) {
+    mDirectorAccess.addEventListener('click', function (e) {
+      e.preventDefault();
+      var drawer = $('#mobile-drawer');
+      if (drawer) drawer.classList.remove('is-open');
+      document.body.style.overflow = '';
+      if (isDirectorAuth) {
+        showToast('Director mode is already active.');
+      } else {
+        openLoginModal();
+      }
+    });
+  }
+
+  if (directorLoginForm) {
+    directorLoginForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var pin = (directorPasscodeInput ? directorPasscodeInput.value.trim() : '');
+      var storedPin = localStorage.getItem('anayah_director_pin') || '1234';
+      if (pin === storedPin) {
+        isDirectorAuth = true;
+        sessionStorage.setItem('anayah_director_auth', 'true');
+        closeLoginModal();
+        updateDirectorUI();
+        renderGallery(currentFolder);
+        showToast('Director Mode unlocked! You can now Add, Edit, or Delete photos.');
+      } else {
+        if (loginError) loginError.style.display = 'block';
+      }
+    });
+  }
+
+  if (btnDirectorLogout) {
+    btnDirectorLogout.addEventListener('click', function () {
+      isDirectorAuth = false;
+      sessionStorage.removeItem('anayah_director_auth');
+      updateDirectorUI();
+      renderGallery(currentFolder);
+      showToast('Director Mode locked.');
+    });
+  }
+
+  // Image Upload / Preview Handling
+  var fileInput = $('#proj-file-input');
+  var imgUrlInput = $('#proj-img-url');
+  var previewBox = $('#proj-img-preview-box');
+  var previewImg = $('#proj-img-preview');
+  var currentSelectedImage = '';
+
+  if (fileInput) {
+    fileInput.addEventListener('change', function () {
+      var file = fileInput.files[0];
+      if (file) {
+        var reader = new FileReader();
+        reader.onload = function (ev) {
+          currentSelectedImage = ev.target.result;
+          if (previewImg) previewImg.src = currentSelectedImage;
+          if (previewBox) previewBox.style.display = 'flex';
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  }
+
+  if (imgUrlInput) {
+    imgUrlInput.addEventListener('input', function () {
+      var val = imgUrlInput.value.trim();
+      if (val) {
+        currentSelectedImage = val;
+        if (previewImg) previewImg.src = val;
+        if (previewBox) previewBox.style.display = 'flex';
+      }
+    });
+  }
+
+  function openAddProjectModal() {
+    if (!editModal) return;
+    $('#edit-project-id').value = '';
+    $('#director-modal-title').textContent = 'Add Project Photo';
+    $('#director-modal-subtitle').textContent = 'DIRECTOR UPLOAD';
+    $('#proj-folder').value = currentFolder;
+    $('#proj-client').value = '';
+    $('#proj-location').value = '';
+    if (fileInput) fileInput.value = '';
+    if (imgUrlInput) imgUrlInput.value = '';
+    currentSelectedImage = '';
+    if (previewBox) previewBox.style.display = 'none';
+
+    if (editModal.showModal) editModal.showModal();
+    else editModal.setAttribute('open', '');
+    document.body.style.overflow = 'hidden';
+    if (lenis) lenis.stop();
+  }
+
+  function openEditProjectModal(key) {
+    var item = projectData[key];
+    if (!item || !editModal) return;
+    $('#edit-project-id').value = key;
+    $('#director-modal-title').textContent = 'Edit Project Photo';
+    $('#director-modal-subtitle').textContent = 'DIRECTOR EDIT';
+    $('#proj-folder').value = item.folder || currentFolder;
+    $('#proj-client').value = item.client || item.title || '';
+    $('#proj-location').value = item.location || '';
+    if (fileInput) fileInput.value = '';
+    if (imgUrlInput) imgUrlInput.value = (item.img && !item.img.startsWith('data:')) ? item.img : '';
+    currentSelectedImage = item.img || '';
+
+    if (currentSelectedImage && previewImg && previewBox) {
+      previewImg.src = currentSelectedImage;
+      previewBox.style.display = 'flex';
+    } else if (previewBox) {
+      previewBox.style.display = 'none';
+    }
+
+    if (editModal.showModal) editModal.showModal();
+    else editModal.setAttribute('open', '');
+    document.body.style.overflow = 'hidden';
+    if (lenis) lenis.stop();
+  }
+
+  function closeEditModal() {
+    if (editModal) {
+      if (editModal.close) editModal.close();
+      else editModal.removeAttribute('open');
+      document.body.style.overflow = '';
+      if (lenis) lenis.start();
+    }
+  }
+
+  if (editModalClose) editModalClose.addEventListener('click', closeEditModal);
+  if (btnCancelEdit) btnCancelEdit.addEventListener('click', closeEditModal);
+  if (btnAddProject) btnAddProject.addEventListener('click', openAddProjectModal);
+
+  if (editProjectForm) {
+    editProjectForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var id = $('#edit-project-id').value;
+      var isNew = !id;
+      if (isNew) {
+        id = 'proj_' + Date.now();
+      }
+
+      var photo = currentSelectedImage;
+      if (!photo && imgUrlInput && imgUrlInput.value.trim()) {
+        photo = imgUrlInput.value.trim();
+      }
+      if (!photo) {
+        photo = 'assets/img/projects/anayah-3d-concept.webp';
+      }
+
+      var folder = $('#proj-folder').value || currentFolder;
+      var client = $('#proj-client').value.trim();
+      var location = $('#proj-location').value.trim();
+
+      projectData[id] = {
+        id: id,
+        folder: folder,
+        client: client,
+        title: client,
+        location: location,
+        img: photo
+      };
+
+      saveProjectsToStorage();
+      closeEditModal();
+      renderGallery(folder);
+      showToast(isNew ? 'New project photo added successfully!' : 'Project photo updated successfully!');
+    });
+  }
+
+  // Initial gallery setup & director UI
+  updateDirectorUI();
+  renderGallery(currentFolder);
+
+  // Initial gallery setup & director UI
+  updateDirectorUI();
+  renderGallery(currentFolder);
 
   var modalInquire = $('.js-modal-inquire');
   if (modalInquire) {
