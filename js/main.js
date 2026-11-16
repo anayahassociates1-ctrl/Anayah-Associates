@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ANAYAH ASSOCIATES — INTERACTIVE CLIENT SCRIPTS
+   ANAYAH ASSOCIATES — ZERO-LAG ENGINE & INTERACTIVE SCRIPTS
    ========================================================================== */
 (function () {
   'use strict';
@@ -7,47 +7,95 @@
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
 
-  /* ---------- 1. STARTING INTRO ANIMATION PRELOADER ---------- */
+  /* ---------- 1. LENIS SMOOTH SCROLL INITIALIZATION ---------- */
+  var lenis = null;
+  if (typeof window.Lenis !== 'undefined') {
+    lenis = new window.Lenis({
+      duration: 1.15,
+      easing: function (t) {
+        return Math.min(1, 1.001 - Math.pow(2, -10 * t));
+      },
+      smoothWheel: true,
+      wheelMultiplier: 0.95,
+      touchMultiplier: 1.25,
+      infinite: false
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+    requestAnimationFrame(raf);
+  }
+
+  /* ---------- 2. STARTING INTRO ANIMATION PRELOADER ---------- */
   var introLoader = $('#intro-loader');
   function dismissIntro() {
     if (!introLoader || introLoader.classList.contains('is-hidden')) return;
     introLoader.classList.add('is-hidden');
   }
 
-  // Dismiss automatically after 1.5s
   window.addEventListener('load', function () {
-    setTimeout(dismissIntro, 1200);
+    setTimeout(dismissIntro, 1000);
   });
-  // Failsafe timer (max 2.2s)
-  setTimeout(dismissIntro, 2200);
-  // Dismiss on early user interaction
+  setTimeout(dismissIntro, 2000);
   window.addEventListener('keydown', dismissIntro, { once: true });
   window.addEventListener('touchstart', dismissIntro, { once: true });
   window.addEventListener('wheel', dismissIntro, { once: true });
 
-  /* ---------- 2. DYNAMIC FLOATING PILL NAVBAR ---------- */
+  /* ---------- 3. SMART NAVBAR: AUTO-HIDE & REVEAL (NO OVERLAP) ---------- */
   var navbar = $('#navbar');
   var burger = $('#nav-burger');
   var drawer = $('#mobile-drawer');
   var drawerClose = $('#drawer-close');
 
-  function updateNavbar() {
-    if (!navbar) return;
-    if (window.scrollY > 50) {
-      navbar.classList.add('is-scrolled');
+  var lastScrollY = window.scrollY;
+  var scrollThreshold = 8;
+  var ticking = false;
+
+  function handleNavbarScroll() {
+    var currentScrollY = window.scrollY;
+    var delta = currentScrollY - lastScrollY;
+
+    if (currentScrollY <= 40) {
+      // At top of page: transparent full-width navbar
+      navbar.classList.add('is-top');
+      navbar.classList.remove('is-scrolled', 'nav-hidden', 'nav-visible');
     } else {
-      navbar.classList.remove('is-scrolled');
+      navbar.classList.remove('is-top');
+      navbar.classList.add('is-scrolled');
+
+      if (delta > scrollThreshold) {
+        // Scrolling DOWN: auto-hide so it NEVER blocks content
+        navbar.classList.add('nav-hidden');
+        navbar.classList.remove('nav-visible');
+      } else if (delta < -scrollThreshold) {
+        // Scrolling UP: reveal compact, floating glassmorphic pill bar
+        navbar.classList.remove('nav-hidden');
+        navbar.classList.add('nav-visible');
+      }
     }
+
+    lastScrollY = currentScrollY;
+    ticking = false;
   }
 
-  window.addEventListener('scroll', updateNavbar, { passive: true });
-  updateNavbar();
+  window.addEventListener('scroll', function () {
+    if (!ticking) {
+      window.requestAnimationFrame(handleNavbarScroll);
+      ticking = true;
+    }
+  }, { passive: true });
 
+  handleNavbarScroll();
+
+  // Mobile Drawer
   if (burger && drawer) {
     burger.addEventListener('click', function () {
       drawer.classList.add('is-open');
       burger.setAttribute('aria-expanded', 'true');
       document.body.style.overflow = 'hidden';
+      if (lenis) lenis.stop();
     });
   }
 
@@ -56,6 +104,7 @@
     drawer.classList.remove('is-open');
     if (burger) burger.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
+    if (lenis) lenis.start();
   }
 
   if (drawerClose) {
@@ -63,26 +112,80 @@
   }
 
   $$('.m-link').forEach(function (link) {
-    link.addEventListener('click', closeDrawer);
+    link.addEventListener('click', function (e) {
+      closeDrawer();
+      var targetId = link.getAttribute('href');
+      if (targetId && targetId.startsWith('#') && targetId.length > 1) {
+        var targetEl = $(targetId);
+        if (targetEl) {
+          e.preventDefault();
+          if (lenis) {
+            lenis.scrollTo(targetEl, { offset: -80 });
+          } else {
+            targetEl.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      }
+    });
   });
 
-  /* ---------- 3. STATS COUNT-UP NUMBERS ---------- */
+  // Desktop smooth anchor clicks with offset
+  $$('.nav-link, .btn-hero-primary, .btn-hero-secondary, .btn-pill-nav').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var targetId = link.getAttribute('href');
+      if (targetId && targetId.startsWith('#') && targetId.length > 1) {
+        var targetEl = $(targetId);
+        if (targetEl) {
+          e.preventDefault();
+          if (lenis) {
+            lenis.scrollTo(targetEl, { offset: -90 });
+          } else {
+            targetEl.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      }
+    });
+  });
+
+  /* ---------- 4. SCROLL REVEAL TRANSITIONS (.fade-up) ---------- */
+  var fadeElements = $$('.fade-up');
+  if ('IntersectionObserver' in window) {
+    var revealObserver = new IntersectionObserver(function (entries, observer) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('is-visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      rootMargin: '0px 0px -40px 0px',
+      threshold: 0.1
+    });
+
+    fadeElements.forEach(function (el) {
+      revealObserver.observe(el);
+    });
+  } else {
+    fadeElements.forEach(function (el) {
+      el.classList.add('is-visible');
+    });
+  }
+
+  /* ---------- 5. STATS COUNT-UP NUMBERS ---------- */
   var counters = $$('.js-counter');
   var countStarted = false;
 
   function runCounters() {
     counters.forEach(function (counter) {
       var target = parseInt(counter.dataset.target, 10) || 0;
-      var duration = 1600;
+      var duration = 1500;
       var startTime = null;
 
       function step(currentTime) {
         if (!startTime) startTime = currentTime;
         var progress = Math.min((currentTime - startTime) / duration, 1);
-        // Easing out cubic
         var easeOut = 1 - Math.pow(1 - progress, 3);
-        var current = Math.floor(easeOut * target);
-        counter.textContent = current;
+        counter.textContent = Math.floor(easeOut * target);
 
         if (progress < 1) {
           window.requestAnimationFrame(step);
@@ -96,25 +199,28 @@
 
   var statsSec = $('#stats');
   if (statsSec && 'IntersectionObserver' in window) {
-    var obs = new IntersectionObserver(function (entries) {
+    var statsObserver = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting && !countStarted) {
           countStarted = true;
           runCounters();
         }
       });
-    }, { threshold: 0.3 });
-    obs.observe(statsSec);
+    }, { threshold: 0.25 });
+    statsObserver.observe(statsSec);
   } else {
     runCounters();
   }
 
-  /* ---------- 4. STICKY HORIZONTAL SCROLL GALLERY ---------- */
+  /* ---------- 6. STICKY HORIZONTAL SCROLL GALLERY (WITH LERP INTERPOLATION) ---------- */
   var gallerySec = $('#gallery');
   var galleryTrack = $('#gallery-track');
+  var currentTranslate = 0;
+  var targetTranslate = 0;
+  var isDesktop = window.innerWidth >= 769;
 
-  function handleGalleryScroll() {
-    if (!gallerySec || !galleryTrack) return;
+  function updateGalleryTarget() {
+    if (!gallerySec || !galleryTrack || !isDesktop) return;
     var rect = gallerySec.getBoundingClientRect();
     var viewHeight = window.innerHeight;
     var totalHeight = rect.height;
@@ -123,18 +229,32 @@
 
     if (maxScroll <= 0) return;
 
-    // Clamped progress (0 to 1)
     var progress = Math.max(0, Math.min(1, scrolled / maxScroll));
-    // Limit is track scrollWidth minus available width
     var limit = Math.max(0, galleryTrack.scrollWidth - window.innerWidth + 80);
-
-    galleryTrack.style.transform = 'translateX(-' + (progress * limit) + 'px)';
+    targetTranslate = progress * limit;
   }
 
-  window.addEventListener('scroll', handleGalleryScroll, { passive: true });
-  window.addEventListener('resize', handleGalleryScroll);
+  // Smooth LERP animation loop on desktop
+  function animateGallery() {
+    if (isDesktop && galleryTrack) {
+      currentTranslate += (targetTranslate - currentTranslate) * 0.12;
+      galleryTrack.style.transform = 'translate3d(-' + currentTranslate.toFixed(2) + 'px, 0, 0)';
+    }
+    requestAnimationFrame(animateGallery);
+  }
+  requestAnimationFrame(animateGallery);
 
-  /* ---------- 5. INTERACTIVE WHY CHOOSE US ACCORDION & IMAGE SWITCHER ---------- */
+  window.addEventListener('scroll', updateGalleryTarget, { passive: true });
+  window.addEventListener('resize', function () {
+    isDesktop = window.innerWidth >= 769;
+    if (!isDesktop && galleryTrack) {
+      galleryTrack.style.transform = 'none';
+    } else {
+      updateGalleryTarget();
+    }
+  });
+
+  /* ---------- 7. INTERACTIVE WHY CHOOSE US ACCORDION & IMAGE SWITCHER ---------- */
   var whyItems = $$('.why-item');
   var dynamicImg = $('#why-dynamic-img');
 
@@ -145,20 +265,17 @@
     btn.addEventListener('click', function () {
       var isOpen = item.classList.contains('is-open');
 
-      // Close all
       whyItems.forEach(function (it) {
         it.classList.remove('is-open');
         var toggle = it.querySelector('.why-toggle');
         if (toggle) toggle.textContent = '+';
       });
 
-      // If clicked wasn't open, open it
       if (!isOpen) {
         item.classList.add('is-open');
         var toggle = item.querySelector('.why-toggle');
         if (toggle) toggle.textContent = '−';
 
-        // Switch image with cross-fade
         var newImgSrc = item.dataset.img;
         if (dynamicImg && newImgSrc) {
           dynamicImg.style.opacity = '0';
@@ -167,13 +284,13 @@
             dynamicImg.src = newImgSrc;
             dynamicImg.style.opacity = '1';
             dynamicImg.style.transform = 'scale(1)';
-          }, 200);
+          }, 180);
         }
       }
     });
   });
 
-  /* ---------- 6. PROJECTS MODAL DATA & DIALOG ---------- */
+  /* ---------- 8. PROJECTS MODAL DATA & DIALOG ---------- */
   var projectData = {
     'aasif': {
       title: 'Aasif Bhai Luxury Residence',
@@ -270,6 +387,7 @@
       modal.setAttribute('open', '');
     }
     document.body.style.overflow = 'hidden';
+    if (lenis) lenis.stop();
   }
 
   function closeProjectModal() {
@@ -280,6 +398,7 @@
       modal.removeAttribute('open');
     }
     document.body.style.overflow = '';
+    if (lenis) lenis.start();
   }
 
   if (modalCloseBtn) {
@@ -305,7 +424,7 @@
     });
   }
 
-  /* ---------- 7. TOAST NOTIFICATION HELPER ---------- */
+  /* ---------- 9. TOAST NOTIFICATIONS ---------- */
   var toast = $('#toast');
   var toastTimer = null;
   function showToast(msg) {
@@ -318,7 +437,7 @@
     }, 3200);
   }
 
-  /* ---------- 8. CONTACT FORM SUBMISSION (WHATSAPP & EMAIL) ---------- */
+  /* ---------- 10. CONTACT FORM (WHATSAPP & EMAIL) ---------- */
   var form = $('#enquiry-form');
   var emailBtn = $('#form-email-btn');
 

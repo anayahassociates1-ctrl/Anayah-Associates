@@ -38,10 +38,10 @@
   <link rel="manifest" href="site.webmanifest">
   <meta name="theme-color" content="#ffffff">
 
-  <!-- Fonts: Geist / Inter + Urbanist / Serif -->
+  <!-- Fonts: Inter + Urbanist Display -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Urbanist:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Urbanist:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/site.css">
 
   <script type="application/ld+json">
@@ -210,25 +210,19 @@
   <!-- ============ STARTING ANIMATION EFFECT (INTRO PRELOADER) ============ -->
   <div id="intro-loader" class="intro-loader" aria-hidden="true">
     <div class="intro-box">
-      <div class="intro-icon">
-        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="24" cy="24" r="20" stroke-dasharray="125" stroke-dashoffset="125" class="intro-circle" />
-          <path d="M24 10 L36 34 H12 Z" stroke-dasharray="80" stroke-dashoffset="80" class="intro-triangle" />
-          <line x1="24" y1="18" x2="24" y2="34" stroke-dasharray="16" stroke-dashoffset="16" class="intro-stem" />
-        </svg>
+      <div class="intro-logo-wrap">
+        <img src="assets/img/logo-nav.png" alt="Anayah Associates Logo" class="intro-logo" width="319" height="64">
       </div>
-      <h2 class="intro-brand">ANAYAH ASSOCIATES</h2>
-      <p class="intro-tag">ARCHITECTS &amp; STRUCTURAL ENGINEERS &bull; SHRIRAMPUR</p>
+      <p class="intro-tag">ARCHITECTS &bull; STRUCTURAL ENGINEERS &bull; SHRIRAMPUR</p>
       <div class="intro-bar"><span class="intro-progress"></span></div>
     </div>
   </div>
 
   <!-- ============ DYNAMIC FLOATING PILL NAVBAR ============ -->
-  <nav class="navbar" id="navbar">
+  <nav class="navbar is-top" id="navbar">
     <div class="nav-container">
       <a href="#" class="nav-logo" aria-label="Anayah Associates Home">
-        <img src="assets/img/logo-nav.png" alt="Anayah Associates Logo" class="nav-logo-img">
-        <span class="nav-brand-text">Anayah Associates</span>
+        <img src="assets/img/logo-nav.png" alt="Anayah Associates Logo" class="nav-logo-img" width="319" height="64">
       </a>
 
       <div class="nav-links">
@@ -254,7 +248,7 @@
   <!-- Mobile Menu Drawer -->
   <div class="mobile-drawer" id="mobile-drawer" aria-hidden="true">
     <div class="mobile-drawer-header">
-      <span class="mobile-drawer-title">Navigation</span>
+      <img src="assets/img/logo-nav.png" alt="Anayah Associates Logo" class="m-drawer-logo" width="319" height="64">
       <button class="mobile-drawer-close" id="drawer-close" aria-label="Close menu">&times;</button>
     </div>
     <div class="mobile-drawer-links">
@@ -315,7 +309,7 @@
     <!-- ============ STATS / OVERVIEW SECTION ============ -->
     <section class="sec-stats" id="stats">
       <div class="wrap">
-        <div class="stats-head">
+        <div class="stats-head fade-up">
           <div class="badge-label">
             <span class="badge-dot"></span>
             <span>PREMIUM CIVIL ENGINEERING &amp; ARCHITECTURE</span>
@@ -334,7 +328,7 @@
           </a>
         </div>
 
-        <div class="stats-numbers">
+        <div class="stats-numbers fade-up">
           <div class="stat-col">
             <span class="stat-val"><span class="js-counter" data-target="60">0</span>+</span>
             <span class="stat-lbl">LANDMARK PROJECTS DELIVERED</span>
@@ -356,7 +350,7 @@
     <!-- ============ STICKY HORIZONTAL SCROLL GALLERY ============ -->
     <section class="sec-gallery" id="gallery">
       <div class="gallery-pin">
-        <div class="gallery-header-bar wrap">
+        <div class="gallery-header-bar wrap fade-up">
           <div>
             <div class="badge-label">
               <span class="badge-dot"></span>
@@ -364,10 +358,10 @@
             </div>
             <h2 class="gallery-title">Selected Works &amp; Executed Projects</h2>
           </div>
-          <p class="gallery-hint">Scroll down to explore &rarr;</p>
+          <p class="gallery-hint">Scroll down to explore portfolio &rarr;</p>
         </div>
 
-        <div class="gallery-track" id="gallery-track">
+        <div class="gallery-track fade-up" id="gallery-track">
           <!-- Card 1 -->
           <article class="gallery-card" data-project="aasif">
             <div class="g-img-wrap">
@@ -395,7 +389,7 @@
           <!-- Card 3 -->
           <article class="gallery-card" data-project="commercial">
             <div class="g-img-wrap">
-              <img src="assets/img/projects/pathan-complex.webp" alt="Commercial Hotel Complex" loading="lazy">
+              <img src="assets/img/projects/pathan-complex.webp" alt="Pathan Commercial Complex" loading="lazy">
             </div>
             <div class="g-info">
               <span class="g-tag">Commercial &bull; Shrirampur</span>
@@ -470,43 +464,45 @@
     <!-- ============ SERVICES SECTION ============ -->
     <section class="sec-services" id="services">
       <div class="wrap">
-        <div class="badge-label">
-          <span class="badge-dot"></span>
-          <span>SPECIALIZED EXPERTISE</span>
+        <div class="services-header fade-up">
+          <div class="badge-label">
+            <span class="badge-dot"></span>
+            <span>SPECIALIZED EXPERTISE</span>
+          </div>
+          <h2 class="services-title">End-to-End Architectural &amp; Civil Engineering</h2>
+          <p class="services-sub">From concept sketch to municipal town planning sanction and final key handover.</p>
         </div>
-        <h2 class="services-title">End-to-End Architectural &amp; Civil Engineering</h2>
-        <p class="services-sub">From concept sketch to municipal town planning sanction and final key handover.</p>
 
         <div class="services-grid">
-          <div class="service-box">
+          <div class="service-box fade-up">
             <div class="s-num">01</div>
             <h3>Architectural House Plans</h3>
             <p>Custom Vastu-compliant 2D floor plans, cross-sections, furniture layouts, and municipal working drawings tailored to your plot dimensions.</p>
             <a href="https://wa.me/918788731650?text=Hello%20Er.%20Sameer%20Shaikh%2C%20I%20am%20interested%20in%20Architectural%20House%20Plans." target="_blank" rel="noopener noreferrer" class="s-link">Ask on WhatsApp &rarr;</a>
           </div>
 
-          <div class="service-box">
+          <div class="service-box fade-up">
             <div class="s-num">02</div>
             <h3>MahaBPMS Building Sanctions</h3>
             <p>Fast municipal building approvals through Maharashtra MahaBPMS and AutoDCR systems with complete 7/12, PR card, and zonal compliance.</p>
             <a href="https://wa.me/918788731650?text=Hello%20Er.%20Sameer%20Shaikh%2C%20I%20need%20help%20with%20MahaBPMS%20Sanctions." target="_blank" rel="noopener noreferrer" class="s-link">Ask on WhatsApp &rarr;</a>
           </div>
 
-          <div class="service-box">
+          <div class="service-box fade-up">
             <div class="s-num">03</div>
             <h3>3D Exterior &amp; Interior Elevations</h3>
             <p>Photorealistic 3D architectural elevations, material palettes, day &amp; evening lighting studies, and immersive walkthrough visualisations.</p>
             <a href="https://wa.me/918788731650?text=Hello%20Er.%20Sameer%20Shaikh%2C%20I%20want%20to%20get%20a%203D%20Elevation%20designed." target="_blank" rel="noopener noreferrer" class="s-link">Ask on WhatsApp &rarr;</a>
           </div>
 
-          <div class="service-box">
+          <div class="service-box fade-up">
             <div class="s-num">04</div>
             <h3>Earthquake-Resistant RC Design</h3>
             <p>Advanced structural engineering compliant with IS 456:2000 and IS 1893:2016. Column, footing, beam, and slab reinforcement blueprints.</p>
             <a href="https://wa.me/918788731650?text=Hello%20Er.%20Sameer%20Shaikh%2C%20I%20need%20Structural%20Engineering%20Design." target="_blank" rel="noopener noreferrer" class="s-link">Ask on WhatsApp &rarr;</a>
           </div>
 
-          <div class="service-box">
+          <div class="service-box fade-up">
             <div class="s-num">05</div>
             <h3>Turnkey Construction Contracting</h3>
             <p>Complete A-to-Z material execution, transparent rate charts, continuous qualified on-site engineer audits, and strict on-time delivery.</p>
@@ -520,7 +516,7 @@
     <section class="sec-why" id="why-us">
       <div class="wrap why-grid">
         <!-- Left: Accordion List -->
-        <div class="why-left">
+        <div class="why-left fade-up">
           <div class="badge-label">
             <span class="badge-dot"></span>
             <span>WHY CHOOSE US</span>
@@ -601,7 +597,7 @@
         </div>
 
         <!-- Right: Dynamic Image Preview -->
-        <div class="why-right">
+        <div class="why-right fade-up">
           <p class="why-lead-desc">
             Our civil engineering consultants provide local insights and personalized support to make your construction journey simple.
           </p>
@@ -616,7 +612,7 @@
     <section class="sec-reviews" id="reviews">
       <div class="wrap reviews-grid">
         <!-- Left: Heading & Badge -->
-        <div class="reviews-left">
+        <div class="reviews-left fade-up">
           <div class="badge-label">
             <span class="badge-dot"></span>
             <span>AUTHENTIC CLIENT REVIEWS</span>
@@ -627,7 +623,7 @@
         </div>
 
         <!-- Right: Dual-Column Marquee Track -->
-        <div class="reviews-right">
+        <div class="reviews-right fade-up">
           <div class="rev-fade-top"></div>
           <div class="rev-fade-bottom"></div>
 
@@ -792,11 +788,11 @@
 
     <!-- ============ CALL TO ACTION (3D FAN-OUT CARDS) ============ -->
     <section class="sec-cta">
-      <div class="wrap cta-wrap">
+      <div class="wrap cta-wrap fade-up">
         <div class="cta-cards-fan">
-          <img src="assets/img/demo/galleryImage1.png" alt="Architecture Space 1" class="fan-img fan-left">
-          <img src="assets/img/demo/galleryImage3.png" alt="Architecture Space 3" class="fan-img fan-right">
-          <img src="assets/img/demo/galleryImage2.png" alt="Architecture Space 2" class="fan-img fan-center">
+          <img src="assets/img/demo/galleryImage1.png" alt="Architecture Space 1" class="fan-img fan-left" width="251" height="139">
+          <img src="assets/img/demo/galleryImage3.png" alt="Architecture Space 3" class="fan-img fan-right" width="251" height="139">
+          <img src="assets/img/demo/galleryImage2.png" alt="Architecture Space 2" class="fan-img fan-center" width="251" height="139">
         </div>
 
         <h2 class="cta-title">Find the Perfect Property &amp; Blueprint for Your Lifestyle</h2>
@@ -812,14 +808,16 @@
     <!-- ============ FAQ SECTION (SEO & USER INTENT) ============ -->
     <section class="sec-faq" id="faq" aria-labelledby="faq-h">
       <div class="wrap">
-        <div class="badge-label">
-          <span class="badge-dot"></span>
-          <span>FREQUENTLY ASKED QUESTIONS &bull; SHRIRAMPUR &amp; AHILYANAGAR</span>
+        <div class="faq-header fade-up">
+          <div class="badge-label">
+            <span class="badge-dot"></span>
+            <span>FREQUENTLY ASKED QUESTIONS &bull; SHRIRAMPUR &amp; AHILYANAGAR</span>
+          </div>
+          <h2 class="faq-title" id="faq-h">Answers to common questions about house plans, sanctions &amp; construction</h2>
+          <p class="faq-lead">Everything you need to know about working with an architect, municipal approvals, 3D designs, and construction quality standards.</p>
         </div>
-        <h2 class="faq-title" id="faq-h">Answers to common questions about house plans, sanctions &amp; construction</h2>
-        <p class="faq-lead">Everything you need to know about working with an architect, municipal approvals, 3D designs, and construction quality standards.</p>
 
-        <div class="faq-list">
+        <div class="faq-list fade-up">
           <details class="faq-item" open>
             <summary class="faq-summary">
               <span class="faq-q">Who is the best architect and civil engineer in Shrirampur?</span>
@@ -894,7 +892,7 @@
     <section class="sec-contact" id="contact" aria-labelledby="contact-h">
       <div class="wrap contact-grid">
         <!-- Left: Form -->
-        <div class="contact-form-side">
+        <div class="contact-form-side fade-up">
           <div class="badge-label">
             <span class="badge-dot"></span>
             <span>CONTACT US</span>
@@ -916,7 +914,7 @@
             <div class="f-row">
               <div class="f-group">
                 <label for="form-email">EMAIL ADDRESS</label>
-                <input type="email" id="form-email" placeholder="e.g. yourname@example.com">
+                <input type="email" id="form-email" placeholder="e.g. yourname@gmail.com">
               </div>
               <div class="f-group">
                 <label for="form-type">TYPE OF PROJECT</label>
@@ -953,10 +951,10 @@
         </div>
 
         <!-- Right: Office & Engineer Card -->
-        <div class="contact-info-side">
+        <div class="contact-info-side fade-up">
           <div class="c-card-engineer">
             <div class="eng-photo-wrap">
-              <img src="assets/img/sameer-shaikh-portrait.webp" alt="Er. Sameer Subhedar Shaikh" class="eng-photo">
+              <img src="assets/img/sameer-shaikh-portrait.webp" alt="Er. Sameer Subhedar Shaikh" class="eng-photo" width="76" height="76">
             </div>
             <div class="eng-details">
               <span class="eng-role">Principal Structural Consultant</span>
@@ -984,8 +982,7 @@
     <div class="wrap">
       <div class="footer-top">
         <div class="footer-brand">
-          <img src="assets/img/logo-nav.png" alt="Anayah Associates Logo" class="footer-logo">
-          <h3>Anayah Associates</h3>
+          <img src="assets/img/logo-nav.png" alt="Anayah Associates Logo" class="footer-logo" width="319" height="64">
           <p class="footer-tag">Bespoke Homes &bull; 3D Elevation &bull; MahaBPMS Sanction &bull; RC Structural Engineering &bull; Since 2018</p>
           <p class="footer-desc">Licensed civil engineers and structural consultants practicing in accordance with Maharashtra Town Planning, AutoDCR, and Bureau of Indian Standards.</p>
         </div>
@@ -1059,6 +1056,8 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
+  <!-- Lenis High-Performance Smooth Scrolling -->
+  <script src="assets/vendor/lenis.min.js"></script>
   <script src="js/main.js"></script>
 </body>
 
