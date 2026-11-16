@@ -2196,6 +2196,27 @@ section, header, footer {
   margin-top: 8px;
 }
 
+.wa-status-hint {
+  margin-top: 12px;
+  padding: 11px 16px;
+  background: rgba(22, 163, 74, 0.08);
+  border: 1px solid rgba(22, 163, 74, 0.25);
+  border-radius: 10px;
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.5;
+}
+
+.wa-status-hint a {
+  color: #16a34a;
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.wa-status-hint strong {
+  color: #16a34a;
+}
+
 .contact-info-side {
   display: flex;
   flex-direction: column;

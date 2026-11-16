@@ -469,19 +469,53 @@
         return;
       }
 
-      var text = 'Hello Er. Sameer Shaikh,\n\n' +
-        'I am interested in architectural & engineering services:\n' +
-        '• Name: ' + d.name + '\n' +
-        '• Phone: ' + d.phone + '\n' +
-        (d.email ? ('• Email: ' + d.email + '\n') : '') +
-        '• Project Type: ' + d.type + '\n' +
-        (d.location ? ('• Site Location: ' + d.location + '\n') : '') +
-        (d.message ? ('• Requirements: ' + d.message + '\n') : '') +
-        '\nPlease let me know when we can schedule a consultation.';
+      var lines = [
+        '*New Project Enquiry — Anayah Associates*',
+        '',
+        '*Client Name:* ' + d.name,
+        '*Phone Number:* ' + d.phone,
+        d.email ? ('*Email:* ' + d.email) : '',
+        '*Project Type:* ' + d.type,
+        d.location ? ('*Plot / Site Location:* ' + d.location) : '',
+        d.message ? ('*Requirements:* ' + d.message) : '',
+        '',
+        'Hello Er. Sameer Shaikh, please review my project requirements above. Looking forward to your consultation.'
+      ].filter(function (l) { return l !== ''; });
 
-      var waUrl = 'https://wa.me/918788731650?text=' + encodeURIComponent(text);
-      window.open(waUrl, '_blank', 'noopener,noreferrer');
-      showToast('Opening WhatsApp to send your enquiry...');
+      var text = lines.join('\n');
+      var encoded = encodeURIComponent(text);
+
+      // Auto-copy to clipboard as an instant fallback
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).catch(function () {});
+      }
+
+      // Detect Mobile vs Desktop for direct, reliable WhatsApp chat opening
+      var isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      var waUrl = isMobile
+        ? ('https://api.whatsapp.com/send?phone=918788731650&text=' + encoded)
+        : ('https://web.whatsapp.com/send?phone=918788731650&text=' + encoded);
+
+      // Use a trusted dynamic link click to prevent popup blockers & parameter dropping
+      var link = document.createElement('a');
+      link.href = waUrl;
+      link.target = '_blank';
+      link.rel = 'noopener';
+      document.body.appendChild(link);
+      link.click();
+      setTimeout(function () {
+        if (link.parentNode) link.parentNode.removeChild(link);
+      }, 500);
+
+      // Show instant confirmation toast and inline status hint
+      showToast('Opening WhatsApp with Er. Sameer (+91 87887 31650)...');
+
+      var hint = $('#wa-status-hint');
+      if (hint) {
+        hint.innerHTML = 'Enquiry prepared for <strong>Er. Sameer Shaikh (+91 87887 31650)</strong>. ' +
+          'If WhatsApp didn\'t open automatically, <a href="' + waUrl + '" target="_blank" rel="noopener">click here to open chat directly</a>.';
+        hint.style.display = 'block';
+      }
     });
   }
 
