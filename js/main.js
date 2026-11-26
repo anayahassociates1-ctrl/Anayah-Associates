@@ -982,8 +982,8 @@
   }
 
   /* ---------- 10. CONTACT FORM (GOOGLE SHEETS, WHATSAPP & EMAIL) ---------- */
-  // Paste your deployed Google Apps Script Web App URL below:
-  var GOOGLE_SHEET_WEBAPP_URL = "";
+  // Deployed Google Apps Script Web App URL:
+  var GOOGLE_SHEET_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxMPxz_OSNsznDUxCwJI_RNnAqxsebGwB28XnfJfanDrZ8uSMif3Bu7CaALB6s6_v1nCQ/exec";
 
   var form = $('#enquiry-form');
   var emailBtn = $('#form-email-btn');
