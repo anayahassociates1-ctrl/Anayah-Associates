@@ -981,7 +981,10 @@
     }, 3200);
   }
 
-  /* ---------- 10. CONTACT FORM (WHATSAPP & EMAIL) ---------- */
+  /* ---------- 10. CONTACT FORM (GOOGLE SHEETS, WHATSAPP & EMAIL) ---------- */
+  // Paste your deployed Google Apps Script Web App URL below:
+  var GOOGLE_SHEET_WEBAPP_URL = "";
+
   var form = $('#enquiry-form');
   var emailBtn = $('#form-email-btn');
 
@@ -1003,6 +1006,42 @@
     };
   }
 
+  // Background Google Sheets & Email Alert Dispatch
+  function syncLeadToGoogleSheet(d) {
+    if (!GOOGLE_SHEET_WEBAPP_URL || GOOGLE_SHEET_WEBAPP_URL.trim() === '' || GOOGLE_SHEET_WEBAPP_URL.indexOf('http') !== 0) {
+      return;
+    }
+
+    var payload = {
+      fullName: d.name,
+      mobile: d.phone,
+      email: d.email || '-',
+      projectType: d.type || 'Residential Villa',
+      location: d.location || '-',
+      notes: d.message || '-',
+      sourceUrl: window.location.href,
+      timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata' })
+    };
+
+    try {
+      fetch(GOOGLE_SHEET_WEBAPP_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        cache: 'no-cache',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+      }).then(function () {
+        console.log('Lead synced to Google Sheet successfully');
+      }).catch(function (err) {
+        console.warn('Google Sheet sync note:', err);
+      });
+    } catch (e) {
+      // Fallback safe
+    }
+  }
+
   if (form) {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
@@ -1012,6 +1051,9 @@
         showToast('Please enter your name and phone number.');
         return;
       }
+
+      // Automatically sync lead to Google Sheet & trigger instant owner email alert
+      syncLeadToGoogleSheet(d);
 
       var lines = [
         '*New Project Enquiry — Anayah Associates*',
@@ -1070,6 +1112,9 @@
         showToast('Please enter your name and phone number first.');
         return;
       }
+
+      // Automatically sync lead to Google Sheet & trigger instant owner email alert
+      syncLeadToGoogleSheet(d);
 
       var subject = 'Project Enquiry from ' + d.name + ' (' + d.type + ')';
       var body = 'Dear Er. Sameer Shaikh,\n\n' +
